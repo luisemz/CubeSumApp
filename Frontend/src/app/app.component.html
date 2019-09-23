@@ -1,7 +1,195 @@
 <div class="container">
-  <div class="starter-template">
-    <h1>Cube Summation App</h1>
-    <p class="lead">You are given a 3-D Matrix in which each block contains 0 initially. The first block is defined by the coordinate (1,1,1) and the last block is defined by the coordinate (N,N,N). There are two types of queries</p>
+  <div class="row">
+    <div class="col-8">
+      <div class="dashboard" *ngIf="showDashboard">
+        <h2>Cube Summation App</h2>
+        <div class="row">
+          <div class="col-12">
+            <p class="lead">
+              You are given a 3-D Matrix in which each block contains 0
+              initially. The first block is defined by the coordinate (1,1,1)
+              and the last block is defined by the coordinate (N,N,N). There are
+              two types of queries
+            </p>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-4">
+            <button
+              type="button"
+              class="btn btn-primary btn-block"
+              (click)="start()"
+            >
+              Start
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="inputs-data" *ngIf="showInputs">
+        <h2>Input Data</h2>
+        <div class="row justify-content-center">
+          <div class="col-6" *ngIf="showInputTestCase">
+            <form
+              [formGroup]="testCaseFormGroup"
+              (ngSubmit)="addTestCaseNumber(testCaseFormGroup.value)"
+            >
+              <div class="form-group">
+                <label for="tcNumber">Test case number</label>
+                <input
+                  formControlName="tcNumber"
+                  type="number"
+                  class="form-control"
+                  id="tcNumber"
+                  aria-describedby="0"
+                  placeholder="Enter test case number"
+                  min="1"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">
+                Add Test Case
+              </button>
+            </form>
+          </div>
+
+          <div class="col-6" *ngIf="showInputTestData">
+            <form
+              [formGroup]="testDataFormGroup"
+              (ngSubmit)="addTestData(testDataFormGroup.value)"
+            >
+              <div class="form-group">
+                <label for="pNumber">Cell deep</label>
+                <input
+                  formControlName="pNumber"
+                  type="number"
+                  class="form-control"
+                  id="pNumber"
+                  aria-describedby="0"
+                  placeholder="Enter cell deep number"
+                  min="1"
+                />
+              </div>
+              <div class="form-group">
+                <label for="optNumber">Operations</label>
+                <input
+                  formControlName="optNumber"
+                  type="number"
+                  class="form-control"
+                  id="optNumber"
+                  aria-describedby="0"
+                  placeholder="Enter operation number"
+                  min="1"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">
+                Add Test Data
+              </button>
+            </form>
+          </div>
+
+          <div class="col-6" *ngIf="showInputTestOperation">
+            <form
+              [formGroup]="testOperationFormGroup"
+              (ngSubmit)="doOperation(testOperationFormGroup.value)"
+            >
+              <div class="form-group">
+                <label for="opt">Operation</label>
+                <input
+                  formControlName="opt"
+                  type="txt"
+                  class="form-control"
+                  id="opt"
+                  aria-describedby="0"
+                  placeholder="Enter operation"
+                />
+                <small id="emailHelp" class="form-text text-muted"
+                  >Valid inputs:</small
+                >
+                <small id="emailHelp" class="form-text text-muted"
+                  >(UPDATE N N N V)</small
+                >
+                <small id="emailHelp" class="form-text text-muted"
+                  >(QUERY N1 N1 N1 N2 N2 N2)</small
+                >
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">
+                Do Operation
+              </button>
+            </form>
+          </div>
+
+          <div class="col-6" *ngIf="showFinalMessages">
+            <p>You don't have any test case to do, please restart!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="dashboard">
+        <h2>Output Data</h2>
+        <div class="row">
+          <div class="col-12">
+            <div class="data-output">
+              <p>
+                Test case number:
+                {{ dataTest.numberTest != null ? dataTest.numberTest : "T" }}
+                <span *ngIf="finalNumberTest"
+                  >(Done: {{ finalNumberTest }})</span
+                >
+              </p>
+              <p>
+                Cells: ({{ dataTest.numberPoints ? 1 : 0 }},
+                {{ dataTest.numberPoints ? 1 : 0 }},
+                {{ dataTest.numberPoints ? 1 : 0 }}) to ({{
+                  dataTest.numberPoints ? dataTest.numberPoints : "N"
+                }}, {{ dataTest.numberPoints ? dataTest.numberPoints : "N" }},
+                {{ dataTest.numberPoints ? dataTest.numberPoints : "N" }})
+              </p>
+              <p>
+                Operation number:
+                {{
+                  dataTest.numberOperations != null
+                    ? dataTest.numberOperations
+                    : "M"
+                }}
+                <span *ngIf="finalNumberOperations"
+                  >(Done: {{ finalNumberOperations }})</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <p *ngIf="finalResponse.length > 0"><strong>Output</strong></p>
+            <div class="output-container">
+              <div *ngFor="let res of finalResponse">
+                <p>{{ res }}</p>
+                <hr />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row  justify-content-center">
+          <div class="col-10" *ngIf="showInputs">
+            <button
+              type="button"
+              class="btn btn-primary btn-block"
+              (click)="restart()"
+            >
+              Restart
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-block"
+              (click)="initApp()"
+            >
+              Exit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
